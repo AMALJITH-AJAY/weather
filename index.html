@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .background{
+         position:relative;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 100vh;
+         background-repeat: no-repeat;
+         background-position: center;
+         background-size: cover;
+         background-image: url(./image.html/BtK0jcwCMAE-VKp.jpg);
+        }
+        .app-container{
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            background-color: transparent;
+
+        }
+        .header{
+            margin-bottom: 20px;
+            align-items: center;
+            justify-content: space-between;
+            display: flex;
+        }
+        #locationInput{
+            width: 70%;
+            padding: 5px;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        button{
+            background-color: rgb(52, 11, 148);
+            color: white;
+            cursor:pointer;
+            border-radius: 5px;
+            padding: 5px 10px;
+            border: none;
+            
+        }
+        .weather-info{
+            align-items: center;
+            justify-content: space-between;
+            display: flex;
+        }
+        .left-info{
+            text-align: left;
+            width: 45%;
+        }
+        .right-info{
+            text-align: left;
+            width: 45%;
+        }
+        h1{
+            font-size: 3rem;
+            margin: 0;
+        }
+        h2{
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        p{
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        @media(max-width:768px){
+            .header{
+                flex-direction: column;
+                align-items: center;
+            }
+            #locationInput{
+                margin-bottom: 10px;
+                margin-right: 0;
+                width: 100%;
+
+            }
+            .weather-info{
+                flex-direction: column;
+            }
+            .left-info,.right-info{
+                width: 100%;
+            }
+        }
+        </style>
+</head>
+<body>
+    <div class="background">
+        <div class="app-container">
+            <div class="header">
+                <input type="text" id="locationInput" placeholder="Enter a location">
+                <button onclick="search()" id="searcButton">search</button>
+                <button id="currentLocationButton">Current Location</button>
+            </div>
+            <div class="weather-info">
+                <div class="left-info">
+                    <p>Max Temp</p>
+                    <p>Min Temp</p>
+                    <p>Max Humidity</p>
+                    <p>Min Humidity</p>
+                </div>
+                <div class="right-info">
+                    <h2 id="date"></h2>
+                    <h1 id="temperature"></h1>
+                    <p id="place"></p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function search(){
+        const city=document.getElementById('locationInput').value;
+        const apikey='YOUR_APT_KEY'
+        if(city.trim()==''){
+            alert('please enter a city name')
+            return;
+        }
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=b41ec3be35c7dac8aabbc21ba253137a`)
+        .then(Response=>Response.json())
+        .then(data=>
+        {
+            const temperature=data.main.temp;
+            const maxTemp =data.main.temp_max;
+            const minTemp = data.main.temp_min;
+            const maxHumidity=data.main.humidity;
+            const minHumidity=data.main.humidity;
+            const place=data.name;
+            document.getElementById('temperature').textContent= temperature;
+            document.getElementById('date').textContent= new Date().toLocaleDateString();
+            document.getElementById('place').textContent= place;
+            document.getElementById('maxTemp').textContent= maxTemp;
+            document.getElementById('minTemp').textContent= minTemp;
+            document.getElementById('maxHumidity').textContent= maxHumidity;
+            document.getElementById('minHumidity').textContent= minHumidity;
+        }
+        
+        )
+        .catch(error=>
+        {
+            console.error('error',error);
+            alert('an error occured.please try again later')
+        })
+    }
+</script>
+</html>
